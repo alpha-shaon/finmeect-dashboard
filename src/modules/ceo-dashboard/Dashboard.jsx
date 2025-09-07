@@ -25,18 +25,44 @@ import { getAlerts } from "./services/firebaseAlerts";
 export default function Dashboard() {
   const [data, setData] = useState(null);
   const [alerts, setAlerts] = useState([]);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
-      const financials = await getFinancialData();
-      const alertData = await getAlerts();
-      setData(financials);
-      setAlerts(alertData);
+      try {
+        const financials = await getFinancialData();
+        const alertData = await getAlerts();
+        if (!financials) {
+          setError(true);
+          console.error("❌ No financial data returned from API");
+        } else {
+          setData(financials);
+          setAlerts(alertData);
+          console.log("✅ CEO Dashboard rendered with data");
+        }
+      } catch (err) {
+        setError(true);
+        console.error("❌ Error fetching dashboard data:", err);
+      }
     }
     fetchData();
   }, []);
 
-  if (!data) return <div className="text-center p-10">Loading CEO Dashboard...</div>;
+  if (error) {
+    return (
+      <div className="text-center p-10 text-red-600 font-bold">
+        ⚠️ Failed to load CEO Dashboard. Please check API connectivity.
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="text-center p-10 text-gray-600">
+        Loading CEO Dashboard...
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-gray-100 font-sans">
