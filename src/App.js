@@ -1,8 +1,8 @@
 import React from "react";
-import CEOdashboard from "./modules/ceo-dashboard/Dashboard"; // or your actual entry module
+import Dashboard from "./modules/ceo-dashboard/Dashboard"; // Adjust path if needed
 
 function App() {
-  return <CEOdashboard />;
+  return <Dashboard />;
 }
 
 export default App;
