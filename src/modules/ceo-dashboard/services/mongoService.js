@@ -1,15 +1,13 @@
+// src/modules/ceo-dashboard/services/mongoService.js
 export async function getFinancialData() {
   try {
-    const response = await fetch("https://finmeect-api.onrender.com/api/financials");
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch financial data: ${response.statusText}`);
+    const res = await fetch("https://finmeect-api.onrender.com/api/financials");
+    if (!res.ok) {
+      throw new Error(`Fetch failed: ${res.statusText}`);
     }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error in getFinancialData:", error);
+    return await res.json();
+  } catch (err) {
+    console.error("Error in getFinancialData:", err);
     return null;
   }
 }
